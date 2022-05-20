@@ -1,0 +1,19 @@
+{
+  "name": "idcbackendaws",
+  "version": "1.0.0",
+  "description": "Backend for IDC that is deployed into AWS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suchendra1/IDCbackendAWS.git"
+  },
+  "author": "suchendra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suchendra1/IDCbackendAWS/issues"
+  },
+  "homepage": "https://github.com/suchendra1/IDCbackendAWS#readme"
+}
