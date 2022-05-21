@@ -1,9 +1,6 @@
 const express = require("express");
-const path = require("path");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
-const { rejects } = require("assert");
-const { resolve } = require("path");
 
 const app = express();
 app.use(express.json());
@@ -20,12 +17,45 @@ connection.connect((err)=>{
   if(err)
     console.log(err);
   else{
-    const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);";
-    connection.query(sql,(err,res)=>{
+    // users table
+    const users_sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);";
+    connection.query(users_sql,(err,res)=>{
       if(err)
         console.log(err)
       else
         console.log("user table created or it already exists!!!");
+    })
+    // labtech table
+    const labtech_sql = "CREATE TABLE IF NOT EXISTS labtech (mobile VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);";
+    connection.query(labtech_sql,(err,res)=>{
+      if(err)
+        console.log(err)
+      else
+        console.log("labtech table created or it already exists!!!");
+    })
+    // doctor table
+    const doctor_sql = "CREATE TABLE IF NOT EXISTS doctor (mobile VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);";
+    connection.query(doctor_sql,(err,res)=>{
+      if(err)
+        console.log(err)
+      else
+        console.log("doctor table created or it already exists!!!");
+    })
+    // users_memberid table
+    const memberid_sql = "CREATE TABLE IF NOT EXISTS user_memberid (current_memberid INT DEFAULT 1);";
+    connection.query(memberid_sql,(err,res)=>{
+      if(err)
+        console.log(err)
+      else
+        console.log("user_memberid table created or it already exists!!!");
+    })
+    // check if the memberid table is empty
+    const add_to_memberid_sql = "INSERT INTO user_memberid (current_memberid) SELECT 1 WHERE NOT EXISTS (SELECT * FROM user_memberid);"
+    connection.query(add_to_memberid_sql,(err,res)=>{
+      if(err)
+        console.log(err);
+      else
+        console.log("added value to user_memberid");
     })
   }
 })
@@ -69,7 +99,56 @@ const getUserDetails = (memberid) => {
   })
 }
 
-app.get("/",(req,res)=>{res.send('SUITS')})
+const getLabtechDetails = (mobile) => {
+  const SQL = `SELECT * FROM labtech where mobile="${mobile}"`;
+  return new Promise((resolve,reject)=>{
+    connection.query(SQL, (err,result)=>{
+      if(err)
+        return reject(err)
+      return resolve(result)
+    })
+  })
+}
+
+const getDoctorDetails = (mobile) => {
+  const SQL = `SELECT * FROM doctor where mobile="${mobile}"`;
+  return new Promise((resolve,reject)=>{
+    connection.query(SQL, (err,result)=>{
+      if(err)
+        return reject(err)
+      return resolve(result)
+    })
+  })
+}
+
+const getNextMemberid = () => {
+  const SQL = `SELECT * FROM user_memberid;`;
+  return new Promise((resolve,reject)=>{
+    connection.query(SQL, (err,result)=>{
+      if(err)
+        return reject(err)
+      return resolve(result)
+    })
+  })
+}
+
+app.get("/",(req,res)=>{res.send('SUITS')});
+
+// generates and returns the next memberid
+app.get("/nextMemberid",async (req,res)=>{
+  const currentMemberIdList = await getNextMemberid()
+  const currentMemberId = currentMemberIdList[0].memberid;
+  let memberid = "IDC";
+  if(currentMemberId < 10)
+    memberid += "000"+currentMemberId
+  else if(currentMemberId < 100)
+    memberid += "00"+currentMemberId
+  else if(currentMemberId < 1000)
+    memberid += "0"+currentMemberId
+  else
+    memberid += currentMemberId
+  res.send({memberid})
+});
 
 // POST REQUEST TO LOGIN
 app.post("/userlogin", async (req, res) => {
@@ -94,9 +173,8 @@ app.post("/userlogin", async (req, res) => {
 
 app.post("/techlogin",async (req,res)=>{
   const {mobile,password} = req.body;
-  const labTechSnapShot = await labtech.get()
-  const labtechList = labTechSnapShot.docs.map(doc=>doc.data())
-  const labTechDetail = labtechList.filter((data)=>data.mobile===mobile)[0]
+  const labtechDetails = await getLabtechDetails(mobile);
+  const labTechDetail = labtechDetails[0];
   if(labTechDetail === undefined){
     res.status(400);
     res.send({"error":"Invalid user"});
@@ -114,9 +192,8 @@ app.post("/techlogin",async (req,res)=>{
 
 app.post("/doctorlogin",async (req,res)=>{
   const {mobile,password} = req.body;
-  const doctorSnapShot = await doctor.get()
-  const doctorList = doctorSnapShot.docs.map(doc=>doc.data())
-  const doctorDetail = doctorList.filter(data=>data.mobile===mobile)[0]
+  const doctorDetails = getDoctorDetails(mobile);
+  const doctorDetail = doctorDetails[0];
   if(doctorDetail === undefined){
     res.status(400);
     res.send({"error":"Invalid user"});
@@ -151,12 +228,12 @@ app.post("/userregister" , async (req, res)=>{
         }
       })
       res.status(200);
-      res.send("Success!!!");
+      res.send({"message":"Success!!!"});
     }
     catch(err){
       console.log(err);
       res.status(400);
-      res.send("Registration failed!");
+      res.send({"message":"Registration failed!"});
     }
   }
 });
@@ -164,9 +241,8 @@ app.post("/userregister" , async (req, res)=>{
 app.post("/checkvaliduser",async (req,res)=>{
   const {memberid} = req.body;
   try{
-    const snapshot = await user.get()
-    const userList = snapshot.docs.map((doc)=>doc.data)
-    const userDetail = userList.filter(data=>data.memberid===memberid)[0]
+    const userDetails = await getUserDetails(memberid);
+    const userDetail = userDetails[0];
     if(userDetail===undefined)
     {
       res.status(400)
@@ -185,10 +261,9 @@ app.post("/checkvaliduser",async (req,res)=>{
 });
 
 app.post("/labtechregister",async(req,res)=>{
-  const {name,mobile,address,password}=req.body;
-  const snapshot = await labtech.get()
-  const labTechList = snapshot.docs.map((doc)=>doc.data)
-  const labTechDetail = labTechList.filter(data=>data.mobile===mobile)[0]
+  const {name,mobile,password}=req.body;
+  const labtechDetails = await getLabtechDetails(mobile);
+  const labTechDetail = labtechDetails[0];
   if(labTechDetail !== undefined){
     res.status(400);
     res.send("Mobile already in use");
@@ -209,9 +284,8 @@ app.post("/labtechregister",async(req,res)=>{
 
 app.post("/doctorregister",async (req,res)=>{
   const {name,mobile,password} = req.body;
-  const snapshot = await doctor.get()
-  const doctorList = snapshot.docs.map((doc)=>doc.data)
-  const doctorDetail = doctorList.filter(data=>data.mobile===mobile)[0]
+  const doctorDetails = await getDoctorDetails(mobile);
+  const doctorDetail = doctorDetails[0];
   if(doctorDetail===undefined){
     res.status(400);
     res.send({"error":"Mobile already in user"});
