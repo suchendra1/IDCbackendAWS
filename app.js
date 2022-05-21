@@ -60,10 +60,10 @@ const authenticateUser = async (req, res, next) => {
 
 const getUserDetails = (memberid) => {
   const SQL = `SELECT * FROM users where memberid="${memberid}"`;
-  return new Promise((res,rej)=>{
+  return new Promise((resolve,reject)=>{
     connection.query(SQL, (err,result)=>{
       if(err)
-        return rejects(err)
+        return reject(err)
       return resolve(result)
     })
   })
