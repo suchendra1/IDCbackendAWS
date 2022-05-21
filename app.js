@@ -6,14 +6,26 @@ const mysql = require("mysql")
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 3005;
-
 var connection = createConnection({
     host     : process.env.RDS_HOSTNAME,
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
     port     : process.env.RDS_PORT,
-    database : "IDC"
+})
+
+connection.connect((err)=>{
+  if(err)
+    console.log(err);
+  else{
+    const sql = "CREATE DATABASE IF NOT EXISTS IDC;";
+    connection.query(sql,(err,result)=>{
+      if(err)
+        console.log(err)
+      else
+        console.log("database created successfully")
+        console.log(result);
+    });
+  }
 })
 
 const authenticateUser = async (req, res, next) => {
@@ -295,4 +307,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(3005,()=>{console.log("Server running on http://localhost:3005/")})
+
+const port = process.env.PORT || 3005;
+
+app.listen(port,()=>{console.log(`Server running on http://localhost:${port}/`)})
