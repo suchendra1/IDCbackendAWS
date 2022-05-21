@@ -11,20 +11,20 @@ var connection = mysql.createConnection({
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
     port     : process.env.RDS_PORT,
+    databse  : "IDC"
 })
 
 connection.connect((err)=>{
   if(err)
     console.log(err);
   else{
-    const sql = "CREATE DATABASE IF NOT EXISTS IDC;";
-    connection.query(sql,(err,result)=>{
+    const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255), name VARCHAR(255), password VARCHAR(255));";
+    connection.query(sql,(err,res)=>{
       if(err)
         console.log(err)
       else
-        console.log("database created successfully")
-        console.log(result);
-    });
+        console.log("user table created or it already exists!!!");
+    })
   }
 })
 
@@ -56,7 +56,7 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-app.get("/",(req,res)=>{res.send('hi')})
+app.get("/",(req,res)=>{res.send('SUITS')})
 
 // POST REQUEST TO LOGIN
 app.post("/userlogin", async (req, res) => {
