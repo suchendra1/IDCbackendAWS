@@ -58,7 +58,7 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-const getUserDetails = async (memberid) => {
+const getUserDetails = (memberid) => {
   const SQL = `SELECT * FROM users where memberid="${memberid}"`;
   return new Promise((res,rej)=>{
     connection.query(SQL, (err,result)=>{
