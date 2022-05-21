@@ -62,7 +62,7 @@ app.get("/",(req,res)=>{res.send('SUITS')})
 app.post("/userlogin", async (req, res) => {
   const {memberid, password} = req.body;
   // fetch the user details from IDC database 
-  const SQL = `SELECT memberid FROM users where memberid=="${memberid}"`;
+  const SQL = `SELECT memberid,password FROM users where memberid=="${memberid}"`;
   const userDetail = await connection.query(SQL)
   if(userDetail===undefined){
     res.status(400);
