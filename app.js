@@ -135,7 +135,7 @@ const getNextMemberid = () => {
 app.get("/",(req,res)=>{res.send('SUITS')});
 
 // generates and returns the next memberid
-app.get("/nextMemberid",async (req,res)=>{
+app.get("/nextmemberid",async (req,res)=>{
   const currentMemberIdList = await getNextMemberid()
   const currentMemberId = currentMemberIdList[0].memberid;
   let memberid = "IDC";
