@@ -126,16 +126,8 @@ app.post("/doctorlogin",async (req,res)=>{
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
-  let userDataList;
-  const sql = "SELECT * FROM users;";
-  connection.query(sql, (err, result)=>{
-    if(err)
-      console.log(err)
-    else{
-      userDataList = result
-    }
-  })
-  const userDetail = userDataList.filter((data) => data.memberid===memberid)[0]
+  const sql = `SELECT * FROM users WHERE memberid == "${memberid}";`;
+  const userDetail = await connection.query(sql)[0]
   if(userDetail !== undefined){
     res.status(400);
     res.send({"message":"User already exists"});
