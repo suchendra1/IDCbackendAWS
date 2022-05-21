@@ -134,7 +134,8 @@ app.post("/doctorlogin",async (req,res)=>{
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
-  const userDetail = await getUserDetails(memberid)[0]
+  const userDetails = await getUserDetails(memberid)
+  const userDetail = userDetails[0]
   if(userDetail !== undefined){
     res.status(400);
     res.send({"message":"User already exists"});
