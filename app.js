@@ -56,7 +56,7 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-app.get("/",()=>{res.send({'hi'})})
+app.get("/",()=>{res.send('hi')})
 
 // POST REQUEST TO LOGIN
 app.post("/userlogin", async (req, res) => {
@@ -303,12 +303,6 @@ app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
     res.send({"error":"Unable to fetch data!"});
   }
 });
-
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
-
 
 const port = process.env.PORT || 3005;
 
