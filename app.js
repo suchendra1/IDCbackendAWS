@@ -126,17 +126,30 @@ app.post("/doctorlogin",async (req,res)=>{
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
-  const userDataSnapShot = await user.get()
-  const userDataList = userDataSnapShot.docs.map(doc=>doc.data())
+  let userDataList;
+  const sql = "SELECT * FROM users;";
+  connection.query(sql, (err, result)=>{
+    if(err)
+      console.log(err)
+    else{
+      userDataList = result
+    }
+  })
   const userDetail = userDataList.filter((data) => data.memberid===memberid)[0]
-  console.log(userDetail)
   if(userDetail !== undefined){
     res.status(400);
     res.send({"message":"User already exists"});
   }
   else{
     try{
-      await user.add({memberid,name,password})
+      const sql = `INSERT INTO users VALUES("${memberid}","${name}","${password}")`
+      connection.query(sql,(err,result)=>{
+        if(err)
+          console.log(err);
+        else{
+          console.log(result);
+        }
+      })
       res.status(200);
       res.send("Success!!!");
     }
