@@ -20,13 +20,20 @@ connection.connect((err)=>{
   if(err)
     console.log(err);
   else{
-    const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255), name VARCHAR(255), password VARCHAR(255));";
+    const sql = "DROP TABLE users;";
     connection.query(sql,(err,res)=>{
       if(err)
         console.log(err)
       else
-        console.log("user table created or it already exists!!!");
+        console.log("user table dropped!!!");
     })
+    // const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255), name VARCHAR(255), password VARCHAR(255));";
+    // connection.query(sql,(err,res)=>{
+    //   if(err)
+    //     console.log(err)
+    //   else
+    //     console.log("user table created or it already exists!!!");
+    // })
   }
 })
 
