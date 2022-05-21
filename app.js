@@ -137,7 +137,7 @@ app.get("/",(req,res)=>{res.send('SUITS')});
 // generates and returns the next memberid
 app.get("/nextmemberid",async (req,res)=>{
   const currentMemberIdList = await getNextMemberid()
-  const currentMemberId = currentMemberIdList[0].memberid;
+  const currentMemberId = currentMemberIdList[0].current_memberid;
   let memberid = "IDC";
   if(currentMemberId < 10)
     memberid += "000"+currentMemberId
