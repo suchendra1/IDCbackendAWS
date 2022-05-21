@@ -62,7 +62,7 @@ app.get("/",(req,res)=>{res.send('SUITS')})
 app.post("/userlogin", async (req, res) => {
   const {memberid, password} = req.body;
   // fetch the user details from IDC database 
-  const SQL = `SELECT memberid,password FROM users where memberid=="${memberid}"`;
+  const SQL = `SELECT memberid,password FROM users where memberid="${memberid}"`;
   const userDetail = await connection.query(SQL)
   console.log(userDetail)
   if(userDetail===undefined){
@@ -122,7 +122,7 @@ app.post("/doctorlogin",async (req,res)=>{
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
-  const sql = `SELECT * FROM users WHERE memberid == "${memberid}";`;
+  const sql = `SELECT * FROM users WHERE memberid = "${memberid}";`;
   const userDetail = await connection.query(sql)[0]
   if(userDetail !== undefined){
     res.status(400);
