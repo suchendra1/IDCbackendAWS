@@ -76,20 +76,20 @@ app.post("/userlogin", async (req, res) => {
   const {memberid, password} = req.body;
   // fetch the user details from IDC database 
   const userDetails = await getUserDetails(memberid)
-  res.send(userDetails)
-  // if(userDetail===undefined){
-  //   res.status(400);
-  //   res.send({"error":"Invalid user"});
-  // }
-  // else if(userDetail.password===password){
-  //   res.status(200);
-  //   const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
-  //   res.send({"jwt_token":jwttoken});
-  // }
-  // else{
-  //   res.status(400);
-  //   res.send({"error":"Invalid Password"});
-  // }
+  const userDetail = userDetails[0];
+  if(userDetail===undefined){
+    res.status(400);
+    res.send({"error":"Invalid user"});
+  }
+  else if(userDetail.password===password){
+    res.status(200);
+    const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
+    res.send({"jwt_token":jwttoken});
+  }
+  else{
+    res.status(400);
+    res.send({"error":"Invalid Password"});
+  }
 });
 
 app.post("/techlogin",async (req,res)=>{
