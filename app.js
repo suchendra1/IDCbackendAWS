@@ -64,20 +64,20 @@ app.post("/userlogin", async (req, res) => {
   // fetch the user details from IDC database 
   const SQL = `SELECT memberid,password FROM users where memberid="${memberid}"`;
   const userDetail = await connection.query(SQL)
-  console.log("userDetail",userDetail)
-  if(userDetail===undefined){
-    res.status(400);
-    res.send({"error":"Invalid user"});
-  }
-  else if(userDetail.password===password){
-    res.status(200);
-    const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
-    res.send({"jwt_token":jwttoken});
-  }
-  else{
-    res.status(400);
-    res.send({"error":"Invalid Password"});
-  }
+  res.send(userDetail);
+  // if(userDetail===undefined){
+  //   res.status(400);
+  //   res.send({"error":"Invalid user"});
+  // }
+  // else if(userDetail.password===password){
+  //   res.status(200);
+  //   const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
+  //   res.send({"jwt_token":jwttoken});
+  // }
+  // else{
+  //   res.status(400);
+  //   res.send({"error":"Invalid Password"});
+  // }
 });
 
 app.post("/techlogin",async (req,res)=>{
