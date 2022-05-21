@@ -56,7 +56,7 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-app.get("/",()=>{res.send('hi')})
+app.get("/",(res,res)=>{res.send('hi')})
 
 // POST REQUEST TO LOGIN
 app.post("/userlogin", async (req, res) => {
