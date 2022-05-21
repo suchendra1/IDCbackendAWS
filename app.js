@@ -20,7 +20,7 @@ connection.connect((err)=>{
   if(err)
     console.log(err);
   else{
-    const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255)) NOT NULL;";
+    const sql = "CREATE TABLE IF NOT EXISTS users (memberid VARCHAR(255) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL);";
     connection.query(sql,(err,res)=>{
       if(err)
         console.log(err)
