@@ -6,7 +6,7 @@ const mysql = require("mysql")
 const app = express();
 app.use(express.json());
 
-var connection = createConnection({
+var connection = mysql.createConnection({
     host     : process.env.RDS_HOSTNAME,
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
