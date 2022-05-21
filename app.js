@@ -134,8 +134,7 @@ app.post("/doctorlogin",async (req,res)=>{
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
-  const sql = `SELECT * FROM users WHERE memberid = "${memberid}";`;
-  const userDetail = await connection.query(sql)[0]
+  const userDetail = await getUserDetails(memberid)[0]
   if(userDetail !== undefined){
     res.status(400);
     res.send({"message":"User already exists"});
