@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
 const jwt = require("jsonwebtoken");
-const mysql = require("mysql")
+const mysql = require("mysql");
+const { rejects } = require("assert");
+const { resolve } = require("path");
 
 const app = express();
 app.use(express.json());
@@ -56,15 +58,25 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
+const getUserDetails = async (memberid) => {
+  const SQL = `SELECT * FROM users where memberid="${memberid}"`;
+  return new Promise((res,rej)=>{
+    connection.query(SQL, (err,result)=>{
+      if(err)
+        return rejects(err)
+      return resolve(result)
+    })
+  })
+}
+
 app.get("/",(req,res)=>{res.send('SUITS')})
 
 // POST REQUEST TO LOGIN
 app.post("/userlogin", async (req, res) => {
   const {memberid, password} = req.body;
   // fetch the user details from IDC database 
-  const SQL = `SELECT memberid,password FROM users where memberid="${memberid}"`;
-  const userDetail = await connection.query(SQL)
-  res.send(userDetail);
+  const userDetails = await getUserDetails(memberid)
+  res.send(userDetails)
   // if(userDetail===undefined){
   //   res.status(400);
   //   res.send({"error":"Invalid user"});
