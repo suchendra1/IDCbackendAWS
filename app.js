@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     user     : process.env.RDS_USERNAME,
     password : process.env.RDS_PASSWORD,
     port     : process.env.RDS_PORT,
-    databse  : "IDC"
+    database  : "IDC"
 })
 
 connection.connect((err)=>{
