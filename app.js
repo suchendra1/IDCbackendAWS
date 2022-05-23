@@ -131,7 +131,7 @@ const getLabtechDetails = (mobile) => {
 }
 
 const getDoctorDetails = (mobile) => {
-  const SQL = `SELECT * FROM doctor where mobile="${mobile}"`;
+  const SQL = `SELECT * FROM doctor WHERE mobile="${mobile}"`;
   return new Promise((resolve,reject)=>{
     connection.query(SQL, (err,result)=>{
       if(err)
@@ -212,13 +212,13 @@ app.post("/techlogin",async (req,res)=>{
 
 app.post("/doctorlogin",async (req,res)=>{
   const {mobile,password} = req.body;
-  const doctorDetails = getDoctorDetails(mobile);
+  const doctorDetails = await getDoctorDetails(mobile);
   const doctorDetail = doctorDetails[0];
   if(doctorDetail === undefined){
     res.status(400);
     res.send({"error":"Invalid user"});
   }
-  if(doctorDetail.password === password){
+  else if(doctorDetail.password === password){
     res.status(200);
     const jwttoken = jwt.sign({userType:"doctor",mobile},"SUITS");
     res.send({"jwt_token":jwttoken});
