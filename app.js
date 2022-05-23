@@ -4,6 +4,9 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
 
+const app = express();
+app.use(express.json());
+
 const cors=require("cors");
 const req = require("express/lib/request");
 const corsOptions ={
@@ -13,9 +16,6 @@ const corsOptions ={
 }
 
 app.use(cors(corsOptions))
-
-const app = express();
-app.use(express.json());
 
 var connection = mysql.createConnection({
     host     : process.env.RDS_HOSTNAME,
