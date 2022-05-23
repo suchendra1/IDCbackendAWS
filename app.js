@@ -417,7 +417,7 @@ app.get("/showuserrecord",authenticateUser ,async (req, res)=>{
       if(result.length===0)
         res.send({"data":"No data to show"});
       else
-        res.send({"records":result});
+        res.send(result);
       console.log(records)
     }
   })
@@ -437,7 +437,7 @@ app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
       if(result.length===0)
         res.send({"data":"No data to show"});
       else
-        res.send({"records":result});
+        res.send(result);
       console.log(records)
     }
   })
