@@ -434,8 +434,8 @@ app.get("/showuserrecord",authenticateUser ,async (req, res)=>{
 });
 
 app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
-  const {memberid} = req.body;
-  const sql = `SELECT * FROM records WHERE memberid=${memberid};`;
+  const {memberid} = req.params;
+  const sql = `SELECT * FROM records WHERE memberid="${memberid}";`;
   connection.query(sql,(err,result)=>{
     if(err){
       console.log(err);

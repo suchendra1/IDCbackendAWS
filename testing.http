@@ -49,3 +49,11 @@ Content-Type: application/json
     "mobile":"1234567899",
     "password":"1234"
 }
+###
+POST http://localhost:3005/doctorlogin
+Content-Type: application/json
+
+{
+    "mobile":"1234567899",
+    "password":"1234"
+}
