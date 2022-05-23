@@ -36,3 +36,7 @@ Content-Type: application/json
 {
     "memberid":"IDC0001"
 }
+
+###
+GET http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/showuserrecord
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImdlbmVyYWwiLCJtZW1iZXJpZCI6IklEQzAwMDEiLCJpYXQiOjE2NTMyOTE5NzV9.31-HW3qB4p99F72v22fMhnncaiz1D8TPn7SlcSLmQNU

@@ -405,7 +405,7 @@ app.post("/newlabtechrecord",authenticateUser,async(req,res)=>{
 
 app.get("/showuserrecord",authenticateUser ,async (req, res)=>{
   const {memberid} = req.body;
-  const sql = `SELECT * FROM records WHERE memberid=${memberid};`;
+  const sql = `SELECT * FROM records WHERE memberid="${memberid}";`;
   connection.query(sql,(err,result)=>{
     if(err){
       console.log(err);
