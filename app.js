@@ -346,6 +346,7 @@ app.post("/doctorregister",async (req,res)=>{
 
 app.post("/getusermemberid",authenticateUser,async(req,res)=>{
   const {memberid} = req.body;
+  console.log(memberid)
   res.send({memberid});
 })
 
