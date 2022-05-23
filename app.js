@@ -4,6 +4,16 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
 
+const cors=require("cors");
+const req = require("express/lib/request");
+const corsOptions ={
+      origin:'*', 
+      credentials:true,            //access-control-allow-credentials:true
+      optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions))
+
 const app = express();
 app.use(express.json());
 
