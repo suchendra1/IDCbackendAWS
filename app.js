@@ -350,19 +350,29 @@ app.post("/getdoctormobile",authenticateUser,async(req,res)=>{
 })
 
 app.post("/newuserrecord",authenticateUser, async (req,res)=>{
-  const {memberid,name,date,mobileNo,BP,FBS,PPBS,RBS,HbA1C,Urea,Creatinine,Microalbuminuria,Complaints,OtherSignificantNotes} = req.body;
-    let sql = `INSERT INTO records values ("${memberid}","${name}","${date}","${mobileNo}","${BP}","${FBS}","${PPBS}","${RBS}","${HbA1C}","${Urea}","${Creatinine}","${Microalbuminuria}","${Complaints}","${OtherSignificantNotes}");`;
-    connection.query(sql,(err,result)=>{
-      if(err){
-        console.log(err)
-        res.status(400);
-        res.send({"message":"Failed to add data"});
-      }
-      else{
-        res.status(200);
-        res.send({"message":"Data added successfully!"});
-      }
-    })
+  let sql = `INSERT INTO records (`
+  for(let vals in req.body){
+    sql+=`${vals},`;
+  }
+  sql = sql.slice(0,-1)
+  sql+=`) VALUES (`
+  for(let vals in req.body){
+    sql+=`"${req.body[vals]}",`;
+  }
+  sql = sql.slice(0,-1)
+  sql+=`);`;
+  console.log(sql);
+  connection.query(sql,(err,result)=>{
+    if(err){
+      console.log(err);
+      res.status(400);
+      res.send({"error":"Unable to save data into database!"});
+    }
+    else{
+      res.status(200);
+      res.send({"data":"Data added successfully!"});
+    }
+  })
 });
 
 app.post("/newlabtechrecord",authenticateUser,async(req,res)=>{
