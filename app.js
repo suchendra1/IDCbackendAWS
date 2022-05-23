@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql");
@@ -50,12 +52,20 @@ connection.connect((err)=>{
         console.log("user_memberid table created or it already exists!!!");
     })
     // check if the memberid table is empty
-    const add_to_memberid_sql = "INSERT INTO user_memberid (current_memberid) SELECT 1 WHERE NOT EXISTS (SELECT * FROM user_memberid);"
+    const add_to_memberid_sql = "INSERT INTO user_memberid (current_memberid) SELECT 2 WHERE NOT EXISTS (SELECT * FROM user_memberid);"
     connection.query(add_to_memberid_sql,(err,res)=>{
       if(err)
         console.log(err);
       else
-        console.log("added value to user_memberid");
+        console.log("added value to user_memberid or the vallue already exists");
+    })
+    // create table for records
+    const create_record_table_sql = "CREATE TABLE IF NOT EXISTS records ()";
+    connection.query(create_record_table_sql,(err,result)=>{
+      if(err)
+        console.log(err);
+      else
+        console.log("Created table records or it already exists!!!");
     })
   }
 })
@@ -219,13 +229,21 @@ app.post("/userregister" , async (req, res)=>{
   }
   else{
     try{
-      const sql = `INSERT INTO users VALUES("${memberid}","${name}","${password}")`
+      const sql = `INSERT INTO users VALUES("${memberid}","${name}","${password}")`;
       connection.query(sql,(err,result)=>{
         if(err)
           console.log(err);
         else{
           console.log(result);
         }
+      })
+      const update_sql = `UPDATE user_memberid SET current_memberid = current_memberid+1;`;
+      // update the memberid to next memberid
+      connection.query(update_sql, (err,result)=>{
+        if(err)
+          console.log(err);
+        else
+          console.log(result);
       })
       res.status(200);
       res.send({"message":"Success!!!"});
@@ -393,4 +411,4 @@ app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
 
 const port = process.env.PORT || 3005;
 
-app.listen(port,()=>{console.log(`Server running on http://localhost:${port}/`)})
+app.listen(port,()=>{console.log(`Server running on port : ${port}/`)})

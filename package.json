@@ -4,7 +4,7 @@
   "description": "Backend for IDC that is deployed into AWS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "RDS_HOSTNAME=aaogelgrtj43px.cjaawig0udew.ap-south-1.rds.amazonaws.com RDS_USERNAME=IDC RDS_PASSWORD=Suitseveryone RDS_PORT=3306 node app.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/suchendra1/IDCbackendAWS#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1"

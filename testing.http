@@ -1,0 +1,20 @@
+POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userlogin
+Content-Type: application/json
+
+{
+    "memberid":"IDC0001",
+    "password":"1234"
+}
+
+###
+POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userregister
+Content-Type: application/json
+
+{
+    "memberid":"IDC0001",
+    "name":"shiva",
+    "password":"1234"
+}
+
+###
+GET http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/nextmemberid 
