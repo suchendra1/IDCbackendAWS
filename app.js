@@ -60,7 +60,7 @@ connection.connect((err)=>{
         console.log("added value to user_memberid or the vallue already exists");
     })
     // create table for records
-    const create_record_table_sql = "CREATE TABLE IF NOT EXISTS records ()";
+    const create_record_table_sql = "CREATE TABLE IF NOT EXISTS records (id int NOT NULL AUTO_INCREMENT,memberid VARCHAR(15) NOT NULL,hemoglobin VARCHAR(15),PCV VARCHAR(15),RCB VARCHAR(15),MCV VARCHAR(15),MCHC VARCHAR(15),platelet VARCHAR(15),WBC VARCHAR(15),neutrophils VARCHAR(15),lymphocytes VARCHAR(15),eosinophils VARCHAR(15),basophils VARCHAR(15),rhTyping VARCHAR(15),monocytes VARCHAR(15),FBS VARCHAR(15),PPBS VARCHAR(15),urea VARCHAR(15),creatinine VARCHAR(15),BUN VARCHAR(15),sodium VARCHAR(15),potassium VARCHAR(15),chloride VARCHAR(15),T3 VARCHAR(15),T4 VARCHAR(15),TSH VARCHAR(15),totalCholesterol VARCHAR(15),triglycerides VARCHAR(15),HDL VARCHAR(15),LDL VARCHAR(15),VLDL VARCHAR(15),totalCholesterolByHDLRatio VARCHAR(15),LDLByHDLRatio VARCHAR(15),bilirubinTotal VARCHAR(15),bilirubinDirect VARCHAR(15),bilirubinIndirect VARCHAR(15),SGOTByASL VARCHAR(15),SGPTByALT VARCHAR(15),phosphatase VARCHAR(15),totalProtein VARCHAR(15),albumin VARCHAR(15),globulin VARCHAR(15),agRatio VARCHAR(15),colour VARCHAR(15),PH VARCHAR(15),specificGravity VARCHAR(15),protein VARCHAR(15),glucose VARCHAR(15),ketone VARCHAR(15),nitrite VARCHAR(15),bilirubin VARCHAR(15),blood VARCHAR(15),urobilinogen VARCHAR(15),pusCells VARCHAR(15),epithelialCells VARCHAR(15),RCB VARCHAR(15),casts VARCHAR(15),crystals VARCHAR(15),others VARCHAR(15),bileSalt VARCHAR(15),bilePigments VARCHAR(15))";
     connection.query(create_record_table_sql,(err,result)=>{
       if(err)
         console.log(err);
@@ -217,7 +217,7 @@ app.post("/doctorlogin",async (req,res)=>{
     res.status(400);
     res.send({"error":"Invalid password"});
   }
-})
+});
 
 app.post("/userregister" , async (req, res)=>{
   const {memberid,name, password} = req.body;
@@ -288,7 +288,13 @@ app.post("/labtechregister",async(req,res)=>{
   }
   else{
     try{
-      await labtech.add({name,mobile,password})
+      const sql = `INSERT INTO labtech VALUES ("${name}","${mobile}","${password}");`;
+      connection.query(sql,(err,res)=>{
+        if(err)
+          console.log(err);
+        else
+          console.log("Added new labtech to database");
+      });
       res.status(200);
       res.send("Registration success!!!");
     }
@@ -306,11 +312,17 @@ app.post("/doctorregister",async (req,res)=>{
   const doctorDetail = doctorDetails[0];
   if(doctorDetail===undefined){
     res.status(400);
-    res.send({"error":"Mobile already in user"});
+    res.send({"error" : "Mobile already in user"});
   }
   else{
     try{
-      await doctor.add({name,mobile,password})
+      const sql = `INSERT INTO doctor VALUES ("${name}","${mobile}","${password}");`;
+      connection.query(sql,(err,res)=>{
+        if(err)
+          console.log(err);
+        else
+          console.log("Added new doctor to database");
+      });
       res.status(200);
       res.send({"data":"Registration Success!!"});
     }
@@ -339,76 +351,76 @@ app.post("/getdoctormobile",authenticateUser,async(req,res)=>{
 
 app.post("/newuserrecord",authenticateUser, async (req,res)=>{
   const {memberid,name,date,mobileNo,BP,FBS,PPBS,RBS,HbA1C,Urea,Creatinine,Microalbuminuria,Complaints,OtherSignificantNotes} = req.body;
-  try{
-    await labrecord.add({
-      memberid,name,date,mobileNo,BP,FBS,PPBS,RBS,HbA1C,Urea,Creatinine,Microalbuminuria,Complaints,OtherSignificantNotes
-    });
-    res.status(200);
-    res.send({"Data":"Data added successfully!"});
-  }
-  catch(err){
-    console.log(err);
-    res.status(400);
-    res.send({"error":"Unable to save data into database!"});
-  }
+    let sql = `INSERT INTO records values ("${memberid}","${name}","${date}","${mobileNo}","${BP}","${FBS}","${PPBS}","${RBS}","${HbA1C}","${Urea}","${Creatinine}","${Microalbuminuria}","${Complaints}","${OtherSignificantNotes}");`;
+    connection.query(sql,(err,result)=>{
+      if(err){
+        console.log(err)
+        res.status(400);
+        res.send({"message":"Failed to add data"});
+      }
+      else{
+        res.status(200);
+        res.send({"message":"Data added successfully!"});
+      }
+    })
 });
 
 app.post("/newlabtechrecord",authenticateUser,async(req,res)=>{
   const {memberid,hemoglobin, PCV, RCB, MCV, MCHC, platelet, WBC, neutrophils,lymphocytes, eosinophils, basophils,rhTyping, monocytes, FBS, PPBS, urea, creatinine, BUN, sodium, potassium, chloride, T3, T4, TSH, xray, totalCholesterol,triglycerides, HDL, LDL, VLDL, totalCholesterolByHDLRatio,LDLByHDLRatio, bilirubinTotal, bilirubinDirect, bilirubinIndirect, SGOTByASL, SGPTByALT, phosphatase, totalProtein, albumin, globulin, agRatio, colour, PH, specificGravity, protein, glucose, ketone, nitrite, bilirubin, blood, urobilinogen, pusCells, epithelialCells, RBC, casts, crystals, others, bileSalt, bilePigments} = req.body;
-  try{
-    await labrecord.add({
-      memberid,hemoglobin,PCV,RCB,MCV,MCHC,platelet,WBC,neutrophils,lymphocytes,eosinophils,basophils,rhTyping,monocytes,FBS,PPBS,urea,creatinine,BUN,sodium,potassium,chloride,T3,T4,TSH,totalCholesterol,triglycerides,HDL,LDL,VLDL,totalCholesterolByHDLRatio,LDLByHDLRatio,bilirubinTotal,bilirubinDirect,bilirubinIndirect,SGOTByASL,SGPTByALT,phosphatase,totalProtein,albumin,globulin,agRatio,colour,PH,specificGravity,protein,glucose,ketone,nitrite,bilirubin,blood,urobilinogen,pusCells,epithelialCells,RCB,casts,crystals,others,bileSalt,bilePigments
-    });
-    res.status(200);
-    res.send({"data":"Data added successfully!"});
-  }
-  catch(err){
-    console.log(err);
-    res.status(400);
-    res.send({"error":"Unable to save data into database!"});
-  }
+  const sql = `INSERT INTO records values ("${memberid}","${hemoglobin}","${PCV}", "${RCB}", "${MCV}", "${MCHC}", "${platelet}", "${WBC}", "${neutrophils}","${lymphocytes}", "${eosinophils}", "${basophils}","${rhTyping}", "${monocytes}", "${FBS}", "${PPBS}", "${urea}", "${creatinine}", "${BUN}", "${sodium}", "${potassium}", "${chloride}", "${T3}", "${T4}", "${TSH}", "${totalCholesterol}","${triglycerides}", "${HDL}", "${LDL}", "${VLDL}", "${totalCholesterolByHDLRatio}","${LDLByHDLRatio}", "${bilirubinTotal}", "${bilirubinDirect}", "${bilirubinIndirect}", "${SGOTByASL}", "${SGPTByALT}", "${phosphatase}", "${totalProtein}", "${albumin}", "${globulin}", "${agRatio}", "${colour}", "${PH}", "${specificGravity}", "${protein}", "${glucose}", "${ketone}", "${nitrite}", "${bilirubin}", "${blood}", "${urobilinogen}", "${pusCells}", "${epithelialCells}", "${RBC}", "${casts}", "${crystals}", "${others}", "${bileSalt}", "${bilePigments}");`;
+  connection.query(sql,(err,result)=>{
+    if(err){
+      console.log(err);
+      res.status(400);
+      res.send({"error":"Unable to save data into database!"});
+    }
+    else{
+      res.status(200);
+      res.send({"data":"Data added successfully!"});
+    }
+  })
 });
 
 app.get("/showuserrecord",authenticateUser ,async (req, res)=>{
   const {memberid} = req.body;
-  try{
-    const snapshot = await labrecord.get()
-    const recordList = snapshot.docs.map((doc) => doc.data)
-    const records = recordList.filter(data => data.memberid===memberid)
-    res.status(200);
-    if(records.length===0)
-      res.send({"data":"No data to show"});
-    else
-      res.send(records);
-    console.log(records)
-  }
-  catch(err){
-    console.log(err);
-    res.status(400);
-    res.send({"error":"Unable to fetch data!"});
-  }
+  const sql = `SELECT * FROM records WHERE memberid=${memberid};`;
+  connection.query(sql,(err,result)=>{
+    if(err){
+      console.log(err);
+      res.status(400);
+      res.send({"error":"Unable to fetch data from database!"});
+    }
+    else{
+      res.status(200);
+      if(result.length===0)
+        res.send({"data":"No data to show"});
+      else
+        res.send({"records":result});
+      console.log(records)
+    }
+  })
 });
 
 app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
   const {memberid} = req.body;
-  try{
-    const snapshot = await labrecord.get()
-    const recordList = snapshot.docs.map((doc) => doc.data)
-    const records = recordList.filter(data => data.memberid===memberid)
-    res.status(200);
-    if(records.length===0)
-      res.send({"data":"No data to show"});
-    else
-      res.send(records);
-    console.log(records)
-  }
-  catch(err){
-    console.log(err);
-    res.status(400);
-    res.send({"error":"Unable to fetch data!"});
-  }
+  const sql = `SELECT * FROM records WHERE memberid=${memberid};`;
+  connection.query(sql,(err,result)=>{
+    if(err){
+      console.log(err);
+      res.status(400);
+      res.send({"error":"Unable to fetch data from database!"});
+    }
+    else{
+      res.status(200);
+      if(result.length===0)
+        res.send({"data":"No data to show"});
+      else
+        res.send({"records":result});
+      console.log(records)
+    }
+  })
 });
 
 const port = process.env.PORT || 3005;
 
-app.listen(port,()=>{console.log(`Server running on port : ${port}/`)})
+app.listen(port,()=>{console.log(`Server running on port : ${port}`)})
