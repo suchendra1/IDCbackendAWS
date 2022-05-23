@@ -366,8 +366,20 @@ app.post("/newuserrecord",authenticateUser, async (req,res)=>{
 });
 
 app.post("/newlabtechrecord",authenticateUser,async(req,res)=>{
-  const {memberid,hemoglobin, PCV, RCB, MCV, MCHC, platelet, WBC, neutrophils,lymphocytes, eosinophils, basophils,rhTyping, monocytes, FBS, PPBS, urea, creatinine, BUN, sodium, potassium, chloride, T3, T4, TSH, totalCholesterol,triglycerides, HDL, LDL, VLDL, totalCholesterolByHDLRatio,LDLByHDLRatio, bilirubinTotal, bilirubinDirect, bilirubinIndirect, SGOTByASL, SGPTByALT, phosphatase, totalProtein, albumin, globulin, agRatio, colour, PH, specificGravity, protein, glucose, ketone, nitrite, bilirubin, blood, urobilinogen, pusCells, epithelialCells, RBC, casts, crystals, others, bileSalt, bilePigments} = req.body;
-  const sql = `INSERT INTO records values ("${memberid}","${hemoglobin}","${PCV}", "${RCB}", "${MCV}", "${MCHC}", "${platelet}", "${WBC}", "${neutrophils}","${lymphocytes}", "${eosinophils}", "${basophils}","${rhTyping}", "${monocytes}", "${FBS}", "${PPBS}", "${urea}", "${creatinine}", "${BUN}", "${sodium}", "${potassium}", "${chloride}", "${T3}", "${T4}", "${TSH}", "${totalCholesterol}","${triglycerides}", "${HDL}", "${LDL}", "${VLDL}", "${totalCholesterolByHDLRatio}","${LDLByHDLRatio}", "${bilirubinTotal}", "${bilirubinDirect}", "${bilirubinIndirect}", "${SGOTByASL}", "${SGPTByALT}", "${phosphatase}", "${totalProtein}", "${albumin}", "${globulin}", "${agRatio}", "${colour}", "${PH}", "${specificGravity}", "${protein}", "${glucose}", "${ketone}", "${nitrite}", "${bilirubin}", "${blood}", "${urobilinogen}", "${pusCells}", "${epithelialCells}", "${RBC}", "${casts}", "${crystals}", "${others}", "${bileSalt}", "${bilePigments}");`;
+  // const {memberid,hemoglobin, PCV, RCB, MCV, MCHC, platelet, WBC, neutrophils,lymphocytes, eosinophils, basophils,rhTyping, monocytes, FBS, PPBS, urea, creatinine, BUN, sodium, potassium, chloride, T3, T4, TSH, totalCholesterol,triglycerides, HDL, LDL, VLDL, totalCholesterolByHDLRatio,LDLByHDLRatio, bilirubinTotal, bilirubinDirect, bilirubinIndirect, SGOTByASL, SGPTByALT, phosphatase, totalProtein, albumin, globulin, agRatio, colour, PH, specificGravity, protein, glucose, ketone, nitrite, bilirubin, blood, urobilinogen, pusCells, epithelialCells, RBC, casts, crystals, others, bileSalt, bilePigments} = req.body;
+  // const sql = `INSERT INTO records values ("${memberid}","${hemoglobin}","${PCV}", "${RCB}", "${MCV}", "${MCHC}", "${platelet}", "${WBC}", "${neutrophils}","${lymphocytes}", "${eosinophils}", "${basophils}","${rhTyping}", "${monocytes}", "${FBS}", "${PPBS}", "${urea}", "${creatinine}", "${BUN}", "${sodium}", "${potassium}", "${chloride}", "${T3}", "${T4}", "${TSH}", "${totalCholesterol}","${triglycerides}", "${HDL}", "${LDL}", "${VLDL}", "${totalCholesterolByHDLRatio}","${LDLByHDLRatio}", "${bilirubinTotal}", "${bilirubinDirect}", "${bilirubinIndirect}", "${SGOTByASL}", "${SGPTByALT}", "${phosphatase}", "${totalProtein}", "${albumin}", "${globulin}", "${agRatio}", "${colour}", "${PH}", "${specificGravity}", "${protein}", "${glucose}", "${ketone}", "${nitrite}", "${bilirubin}", "${blood}", "${urobilinogen}", "${pusCells}", "${epithelialCells}", "${RBC}", "${casts}", "${crystals}", "${others}", "${bileSalt}", "${bilePigments}");`;
+  let sql = `INSERT INTO records (`
+  for(let vals in req.body){
+    sql+=`${vals},`;
+  }
+  sql = sql.slice(0,-1)
+  sql+=`) VALUES (`
+  for(let vals in req.body){
+    sql+=`"${req.body[vals]}",`;
+  }
+  sql = sql.slice(0,-1)
+  sql+=`);`;
+  console.log(sql);
   connection.query(sql,(err,result)=>{
     if(err){
       console.log(err);
