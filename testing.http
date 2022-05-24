@@ -57,3 +57,11 @@ Content-Type: application/json
     "mobile":"1234567899",
     "password":"1234"
 }
+
+###
+GET http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/showuserrecord/IDC0001
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImRvY3RvciIsIm1vYmlsZSI6IjEyMzQ1Njc4OTkiLCJpYXQiOjE2NTMzMDQxMTR9.Ld3e_ABbsm6vvQmsh8bIyxQF06bC4HaZzGIIPQoHmDw
+
+###
+POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/getusermemberid
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImdlbmVyYWwiLCJtZW1iZXJpZCI6IklEQzAwMDEiLCJpYXQiOjE2NTMzMDU0OTN9.RllbMFNnFFMiZv7Wvy4jWqwiCrJNPs2OIrL655oiejs

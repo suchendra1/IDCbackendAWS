@@ -245,18 +245,18 @@ app.post("/userregister" , async (req, res)=>{
           console.log(err);
         else{
           console.log(result);
+          res.status(200);
+          res.send({"message":"Success!!!"});
+          const update_sql = `UPDATE user_memberid SET current_memberid = current_memberid+1;`;
+          // update the memberid to next memberid
+          connection.query(update_sql, (err,result)=>{
+            if(err)
+              console.log(err);
+            else
+              console.log(result);
+          })
         }
       })
-      const update_sql = `UPDATE user_memberid SET current_memberid = current_memberid+1;`;
-      // update the memberid to next memberid
-      connection.query(update_sql, (err,result)=>{
-        if(err)
-          console.log(err);
-        else
-          console.log(result);
-      })
-      res.status(200);
-      res.send({"message":"Success!!!"});
     }
     catch(err){
       console.log(err);
