@@ -2,7 +2,7 @@ POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userlogi
 Content-Type: application/json
 
 {
-    "memberid":"IDC0001",
+    "memberid":"IDC0002",
     "password":"1234"
 }
 
@@ -11,7 +11,7 @@ POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userregi
 Content-Type: application/json
 
 {
-    "memberid":"IDC0001",
+    "memberid":"IDC0002",
     "name":"shiva",
     "password":"1234"
 }
@@ -65,3 +65,6 @@ Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImRvY
 ###
 POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/getusermemberid
 Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImdlbmVyYWwiLCJtZW1iZXJpZCI6IklEQzAwMDEiLCJpYXQiOjE2NTMzMDU0OTN9.RllbMFNnFFMiZv7Wvy4jWqwiCrJNPs2OIrL655oiejs
+
+###
+GET https://us-central1-idc2022-e8f19.cloudfunctions.net/app/nextmemberid
