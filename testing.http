@@ -67,4 +67,4 @@ POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/getuserm
 Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6ImdlbmVyYWwiLCJtZW1iZXJpZCI6IklEQzAwMDEiLCJpYXQiOjE2NTMzMDU0OTN9.RllbMFNnFFMiZv7Wvy4jWqwiCrJNPs2OIrL655oiejs
 
 ###
-GET https://us-central1-idc2022-e8f19.cloudfunctions.net/app/nextmemberid
+GET https://us-central1-idc2022-e8f19.cloudfunctions.net/app
