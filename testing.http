@@ -1,8 +1,8 @@
-POST http://idcbackend-env.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userlogin
+POST https://idcbackend-env-2.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/userlogin 
 Content-Type: application/json
 
 {
-    "memberid":"IDC0002",
+    "memberid":"sai",
     "password":"1234"
 }
 
