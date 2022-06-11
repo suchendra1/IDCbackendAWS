@@ -239,7 +239,7 @@ app.post("/userregister" , async (req, res)=>{
   }
   else{
     try{
-      const sql = `INSERT INTO users VALUES("${memberid}","${name}","${password}")`;
+      const sql = `INSERT INTO users (memberid,name,password) VALUES("${memberid}","${name}","${password}")`;
       connection.query(sql,(err,result)=>{
         if(err)
           console.log(err);
@@ -298,7 +298,7 @@ app.post("/labtechregister",async(req,res)=>{
   }
   else{
     try{
-      const sql = `INSERT INTO labtech VALUES ("${name}","${mobile}","${password}");`;
+      const sql = `INSERT INTO labtech (name,mobile,password) VALUES ("${name}","${mobile}","${password}");`;
       connection.query(sql,(err,res)=>{
         if(err)
           console.log(err);
@@ -326,7 +326,7 @@ app.post("/doctorregister",async (req,res)=>{
   }
   else{
     try{
-      const sql = `INSERT INTO doctor VALUES ("${name}","${mobile}","${password}");`;
+      const sql = `INSERT INTO doctor (name,mobile,password) VALUES ("${name}","${mobile}","${password}");`;
       connection.query(sql,(err,res)=>{
         if(err)
           console.log(err);
