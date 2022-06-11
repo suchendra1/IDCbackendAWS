@@ -180,6 +180,10 @@ app.post("/userlogin", async (req, res) => {
     res.status(400);
     res.send({"error":"Invalid user"});
   }
+  else if(userDetail.blocked==="YES"){
+    res.status(400);
+    res.send({"message":"You have been temporarily blocked!!!"});
+  }
   else if(userDetail.password===password){
     res.status(200);
     const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
@@ -199,6 +203,10 @@ app.post("/techlogin",async (req,res)=>{
     res.status(400);
     res.send({"error":"Invalid user"});
   }
+  else if(labtechDetails.blocked==="YES"){
+    res.status(400);
+    res.send({"message":"You have been temporarily blocked!!!"});
+  }
   else if(labTechDetail.password === password){
     const jwttoken = jwt.sign({userType:"labtech",mobile},"SUITS");
     res.status(200)
@@ -217,6 +225,10 @@ app.post("/doctorlogin",async (req,res)=>{
   if(doctorDetail === undefined){
     res.status(400);
     res.send({"error":"Invalid user"});
+  }
+  else if(doctorDetail.blocked==="YES"){
+    res.status(400);
+    res.send({"message":"You have been temporarily blocked!!!"});
   }
   else if(doctorDetail.password === password){
     res.status(200);
