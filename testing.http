@@ -68,3 +68,11 @@ Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVHlwZSI6Imdlb
 
 ###
 GET https://us-central1-idc2022-e8f19.cloudfunctions.net/app
+
+###
+POST https://idcbackend-env-2.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/techlogin
+Content-Type: application/json
+
+{
+    "mobile":"admin"
+}

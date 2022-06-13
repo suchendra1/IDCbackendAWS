@@ -199,11 +199,12 @@ app.post("/techlogin",async (req,res)=>{
   const {mobile,password} = req.body;
   const labtechDetails = await getLabtechDetails(mobile);
   const labTechDetail = labtechDetails[0];
+  console.log(labtechDetails)
   if(labTechDetail === undefined){
     res.status(400);
     res.send({"error":"Invalid user"});
   }
-  else if(labtechDetails.blocked==="YES"){
+  else if(labTechDetail.blocked==="YES"){
     res.status(400);
     res.send({"error":"You have been temporarily blocked!!!"});
   }
@@ -468,4 +469,4 @@ app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
 
 const port = process.env.PORT || 3005;
 
-app.listen(port,()=>{console.log(`Server running on port : ${port}`)})
+app.listen(3100,()=>{console.log(`Server running on port : ${port}`)})
