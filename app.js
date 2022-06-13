@@ -187,6 +187,12 @@ app.post("/userlogin", async (req, res) => {
   else if(userDetail.password===password){
     res.status(200);
     const jwttoken = jwt.sign({userType:"general",memberid},"SUITS");
+    const sql="UPDATE counts SET userLogins = userLogins+1;"
+    connection.query(sql,(err,result)=>{
+      if(err)
+        console.log(err)
+      console.log(result)
+    })
     res.send({"jwt_token":jwttoken});
   }
   else{
@@ -210,6 +216,12 @@ app.post("/techlogin",async (req,res)=>{
   }
   else if(labTechDetail.password === password){
     const jwttoken = jwt.sign({userType:"labtech",mobile},"SUITS");
+    const sql="UPDATE counts SET labtechLogins = labtechLogins+1;"
+    connection.query(sql,(err,result)=>{
+      if(err)
+        console.log(err)
+      console.log(result)
+    })
     res.status(200)
     res.send({"jwt_token":jwttoken});
   } 
@@ -234,6 +246,12 @@ app.post("/doctorlogin",async (req,res)=>{
   else if(doctorDetail.password === password){
     res.status(200);
     const jwttoken = jwt.sign({userType:"doctor",mobile},"SUITS");
+    const sql="UPDATE counts SET doctorLogins = doctorsLogins+1;"
+    connection.query(sql,(err,result)=>{
+      if(err)
+        console.log(err)
+      console.log(result)
+    })
     res.send({"jwt_token":jwttoken});
   }
   else{
