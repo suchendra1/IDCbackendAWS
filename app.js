@@ -242,7 +242,7 @@ app.post("/doctorlogin",async (req,res)=>{
 });
 
 app.post("/userregister" , async (req, res)=>{
-  const {memberid,name, password} = req.body;
+  const {memberid,name,mobile, password} = req.body;
   const userDetails = await getUserDetails(memberid)
   const userDetail = userDetails[0]
   if(userDetail !== undefined){
@@ -251,7 +251,7 @@ app.post("/userregister" , async (req, res)=>{
   }
   else{
     try{
-      const sql = `INSERT INTO users (memberid,name,password) VALUES("${memberid}","${name}","${password}")`;
+      const sql = `INSERT INTO users (memberid,mobile,name,password) VALUES("${memberid}","${name}","${password}")`;
       connection.query(sql,(err,result)=>{
         if(err)
           console.log(err);
