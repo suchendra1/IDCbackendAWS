@@ -469,4 +469,4 @@ app.get("/showuserrecord/:memberid",authenticateUser ,async (req, res)=>{
 
 const port = process.env.PORT || 3005;
 
-app.listen(3100,()=>{console.log(`Server running on port : ${port}`)})
+app.listen(port,()=>{console.log(`Server running on port : ${port}`)})
