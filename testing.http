@@ -74,5 +74,15 @@ POST https://idcbackend-env-2.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/techl
 Content-Type: application/json
 
 {
-    "mobile":"admin"
+    "mobile":"admin","password":"suits"
+}
+
+###
+GET https://idcbackend-env-2.eba-bmwvm95d.ap-south-1.elasticbeanstalk.com/
+###
+POST http://localhost:3100/techlogin
+Content-Type: application/json
+
+{
+    "mobile":"admin","password":"suits"
 }

@@ -457,7 +457,7 @@ app.get("/showuserrecord",authenticateUser ,async (req, res)=>{
     else{
       res.status(200);
       if(result.length===0)
-        res.send({"data":"No data to show"});
+        res.send({"result":"No data to show"});
       else
         res.send(result);
       console.log(records)
